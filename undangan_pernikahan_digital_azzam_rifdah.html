@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan: Azzam & Rifdah</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans & Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Space+Grotesk:wght@600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neo-yellow': '#FFE600',
+                        'neo-pink': '#FF70A6',
+                        'neo-purple': '#9B51E0',
+                        'neo-mint': '#70D6FF',
+                        'neo-cream': '#FAF7F0',
+                        'neo-orange': '#FF9F1C',
+                        'neo-green': '#FFD166'
+                    },
+                    boxShadow: {
+                        'neo': '4px 4px 0px 0px rgba(0,0,0,1)',
+                        'neo-lg': '6px 6px 0px 0px rgba(0,0,0,1)',
+                        'neo-xl': '8px 8px 0px 0px rgba(0,0,0,1)',
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        heading: ['Space Grotesk', 'sans-serif'],
+                        gothic: ['UnifrakturMaguntia', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FAF7F0;
+            color: #121212;
+            overflow-x: hidden;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFE600;
+            border-left: 3px solid #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #000;
+        }
+        .brutal-border {
+            border: 3px solid #000;
+        }
+        .brutal-border-lg {
+            border: 4px solid #000;
+        }
+        /* Lock scroll when cover active */
+        body.cover-active {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="cover-active font-sans antialiased text-black selection:bg-neo-pink selection:text-white">
+
+    <!-- AUDIO PLAYER BACKGROUND (Romantic Artsy Lofi/Indie Theme) -->
+    <audio id="bg-music" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-beautiful-dream-493.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- FLOATING MUSIC TOGGLE BUTTON -->
+    <button id="music-btn" onclick="toggleMusic()" aria-label="Toggle Audio" class="hidden fixed bottom-6 right-6 z-40 bg-neo-yellow brutal-border-lg p-4 rounded-full shadow-neo hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all duration-150 flex items-center justify-center">
+        <i id="music-icon" class="fa-solid fa-compact-disc fa-spin text-2xl text-black"></i>
+    </button>
+
+    <!-- TOAST NOTIFICATION FOR COPY REKENING -->
+    <div id="toast" class="fixed top-6 right-1/2 translate-x-1/2 z-50 hidden bg-neo-mint brutal-border-lg px-6 py-3 rounded-lg shadow-neo text-black font-bold text-sm md:text-base transition-all duration-300">
+        <i class="fa-solid fa-check-circle mr-2"></i> No. Rekening Berhasil Disalin!
+    </div>
+
+    <!-- COVER PEMBUKA MODAL -->
+    <div id="cover-modal" class="fixed inset-0 z-50 bg-neo-yellow flex flex-col justify-between p-6 md:p-12 transition-transform duration-700 ease-in-out">
+        <!-- Top Tagline -->
+        <div class="flex justify-between items-center brutal-border-lg bg-white p-4 shadow-neo rounded-xl">
+            <span class="font-heading font-extrabold uppercase tracking-widest text-xs md:text-sm">The Wedding Of</span>
+            <span class="bg-neo-pink text-white font-bold px-3 py-1 text-xs uppercase brutal-border rounded">01 . 01 . 2027</span>
+        </div>
+
+        <!-- Center Couple Info -->
+        <div class="my-auto text-center py-8">
+            <div class="inline-block bg-neo-mint brutal-border-lg px-4 py-1 rounded-full font-bold text-xs uppercase mb-4 shadow-neo">
+                Special Invitation For You
+            </div>
+            <h1 class="font-heading text-5xl sm:text-7xl md:text-9xl font-black uppercase tracking-tight leading-none mb-4">
+                AZZAM <br><span class="text-neo-pink stroke-black">&</span> RIFDAH
+            </h1>
+            <p class="font-heading text-lg md:text-xl font-bold bg-white inline-block brutal-border-lg px-6 py-2 shadow-neo rounded-lg">
+                #AZZAMnemukanRIFDAH
+            </p>
+        </div>
+
+        <!-- Bottom Action Button -->
+        <div class="text-center">
+            <button onclick="openInvitation()" class="w-full md:w-auto bg-neo-pink text-white font-heading font-black text-xl md:text-2xl brutal-border-lg px-8 py-5 rounded-2xl shadow-neo-lg hover:translate-x-1 hover:translate-y-1 hover:shadow-none active:translate-x-1.5 active:translate-y-1.5 transition-all duration-150 group">
+                <i class="fa-solid fa-envelope-open mr-2 group-hover:animate-bounce"></i> BUKA UNDANGAN
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <div id="main-content" class="min-h-screen">
+
+        <!-- HERO SECTION -->
+        <section class="relative bg-neo-cream border-b-4 border-black py-16 px-4 md:px-12">
+            <div class="max-w-4xl mx-auto text-center space-y-6">
+                <div class="inline-block bg-neo-yellow brutal-border-lg px-4 py-2 font-bold rounded-lg shadow-neo uppercase text-sm">
+                    Save The Date
+                </div>
+                <h2 class="font-heading text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight">
+                    Kami Menikah!
+                </h2>
+                <p class="max-w-2xl mx-auto text-base md:text-lg font-medium text-gray-800 leading-relaxed bg-white p-6 brutal-border-lg shadow-neo rounded-xl">
+                    "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu istri-istri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya."
+                    <span class="block mt-2 font-bold text-neo-purple">— Ar-Rum: 21</span>
+                </p>
+
+                <!-- COUNTDOWN TIMER SECTION -->
+                <div class="pt-6">
+                    <h3 class="font-heading font-bold text-xl mb-4 uppercase">Menghitung Hari Menuju Hari Bahagia</h3>
+                    <div id="countdown" class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                        <div class="bg-neo-pink text-white brutal-border-lg p-4 rounded-xl shadow-neo text-center">
+                            <span id="days" class="font-heading text-4xl md:text-5xl font-black block">00</span>
+                            <span class="text-xs uppercase font-bold tracking-wider">Hari</span>
+                        </div>
+                        <div class="bg-neo-yellow text-black brutal-border-lg p-4 rounded-xl shadow-neo text-center">
+                            <span id="hours" class="font-heading text-4xl md:text-5xl font-black block">00</span>
+                            <span class="text-xs uppercase font-bold tracking-wider">Jam</span>
+                        </div>
+                        <div class="bg-neo-mint text-black brutal-border-lg p-4 rounded-xl shadow-neo text-center">
+                            <span id="minutes" class="font-heading text-4xl md:text-5xl font-black block">00</span>
+                            <span class="text-xs uppercase font-bold tracking-wider">Menit</span>
+                        </div>
+                        <div class="bg-neo-purple text-white brutal-border-lg p-4 rounded-xl shadow-neo text-center">
+                            <span id="seconds" class="font-heading text-4xl md:text-5xl font-black block">00</span>
+                            <span class="text-xs uppercase font-bold tracking-wider">Detik</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROFIL MEMPELAI SECTION -->
+        <section class="py-20 px-4 md:px-12 bg-neo-yellow border-b-4 border-black">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="font-heading text-4xl md:text-6xl font-black uppercase bg-white inline-block brutal-border-lg px-8 py-3 shadow-neo rounded-2xl">
+                        Pasangan Bahagia
+                    </h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-12 items-stretch">
+                    <!-- Groom Profile -->
+                    <div class="bg-white brutal-border-lg p-6 sm:p-8 rounded-2xl shadow-neo-lg flex flex-col justify-between transform transition-transform hover:-translate-y-2">
+                        <div class="text-center">
+                            <div class="relative w-48 h-48 md:w-56 md:h-56 mx-auto mb-6 brutal-border-lg rounded-2xl overflow-hidden shadow-neo bg-neo-mint">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600" alt="Azzam" class="w-full h-full object-cover">
+                            </div>
+                            <h3 class="font-heading text-3xl font-black uppercase">Azzam Syahputra, S.T.</h3>
+                            <p class="text-sm font-bold text-gray-600 mt-2">Putra Pertama dari</p>
+                            <p class="font-bold text-black">Bpk. H. Rahmat Hidayat <br>& Ibu Hj. Siti Aminah</p>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <a href="https://instagram.com" target="_blank" class="inline-flex items-center gap-2 bg-neo-pink text-white font-bold brutal-border px-5 py-2.5 rounded-xl shadow-neo hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all">
+                                <i class="fa-brands fa-instagram text-xl"></i> @azzam.artsy
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Bride Profile -->
+                    <div class="bg-white brutal-border-lg p-6 sm:p-8 rounded-2xl shadow-neo-lg flex flex-col justify-between transform transition-transform hover:-translate-y-2">
+                        <div class="text-center">
+                            <div class="relative w-48 h-48 md:w-56 md:h-56 mx-auto mb-6 brutal-border-lg rounded-2xl overflow-hidden shadow-neo bg-neo-pink">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" alt="Rifdah" class="w-full h-full object-cover">
+                            </div>
+                            <h3 class="font-heading text-3xl font-black uppercase">Rifdah Amalia, S.Ds.</h3>
+                            <p class="text-sm font-bold text-gray-600 mt-2">Putri Kedua dari</p>
+                            <p class="font-bold text-black">Bpk. Drs. Bambang Wijaya <br>& Ibu Hj. Endang Sulastri</p>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <a href="https://instagram.com" target="_blank" class="inline-flex items-center gap-2 bg-neo-mint text-black font-bold brutal-border px-5 py-2.5 rounded-xl shadow-neo hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all">
+                                <i class="fa-brands fa-instagram text-xl"></i> @rifdah.creative
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DETAIL WAKTU, LOKASI & RUNDOWN ACARA SECTION -->
+        <section class="py-20 px-4 md:px-12 bg-neo-cream border-b-4 border-black">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="bg-neo-purple text-white font-bold uppercase text-xs px-4 py-1.5 brutal-border rounded-full shadow-neo">Waktu & Tempat</span>
+                    <h2 class="font-heading text-4xl md:text-6xl font-black uppercase mt-3">Agenda Spesial</h2>
+                </div>
+
+                <!-- AKAD & RESEPSI CARDS -->
+                <div class="grid md:grid-cols-2 gap-8 mb-16">
+                    <!-- Akad Nikah Card -->
+                    <div class="bg-neo-mint brutal-border-lg p-8 rounded-2xl shadow-neo-lg relative overflow-hidden">
+                        <div class="absolute -right-6 -top-6 bg-black text-white px-8 py-2 rotate-12 font-heading font-bold text-xs tracking-widest">Wajib Khidmat</div>
+                        <div class="inline-block bg-white brutal-border p-3 rounded-xl mb-4 shadow-neo">
+                            <i class="fa-solid fa-ring text-3xl text-black"></i>
+                        </div>
+                        <h3 class="font-heading text-3xl font-black uppercase mb-2">Akad Nikah</h3>
+                        <div class="space-y-2 text-base font-semibold border-t-2 border-black pt-4 mb-6">
+                            <p><i class="fa-regular fa-calendar-check mr-2"></i> Jumat, 01 Januari 2027</p>
+                            <p><i class="fa-regular fa-clock mr-2"></i> 10.00 - 11.00 WIB</p>
+                            <p><i class="fa-solid fa-location-dot mr-2"></i> Art Gallery Grand Ballroom, Jakarta South</p>
+                        </div>
+                    </div>
+
+                    <!-- Resepsi Card -->
+                    <div class="bg-neo-pink brutal-border-lg p-8 rounded-2xl shadow-neo-lg text-white relative overflow-hidden">
+                        <div class="inline-block bg-white text-black brutal-border p-3 rounded-xl mb-4 shadow-neo">
+                            <i class="fa-solid fa-champagne-glasses text-3xl"></i>
+                        </div>
+                        <h3 class="font-heading text-3xl font-black uppercase mb-2">Resepsi Pernikahan</h3>
+                        <div class="space-y-2 text-base font-semibold border-t-2 border-white/40 pt-4 mb-6">
+                            <p><i class="fa-regular fa-calendar-check mr-2"></i> Jumat, 01 Januari 2027</p>
+                            <p><i class="fa-regular fa-clock mr-2"></i> 11.30 - 15.00 WIB</p>
+                            <p><i class="fa-solid fa-location-dot mr-2"></i> Art Gallery Grand Ballroom, Jakarta South</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAP BUTTON -->
+                <div class="text-center mb-16">
+                    <a href="https://maps.google.com" target="_blank" class="inline-flex items-center gap-3 bg-neo-yellow text-black font-heading font-extrabold text-xl brutal-border-lg px-8 py-4 rounded-2xl shadow-neo-lg hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
+                        <i class="fa-solid fa-map-location-dot text-2xl"></i> PETUNJUK LOKASI (GOOGLE MAPS)
+                    </a>
+                </div>
+
+                <!-- RUNDOWN ACARA (SCHEDULE) -->
+                <div class="bg-white brutal-border-lg p-6 md:p-10 rounded-2xl shadow-neo-lg">
+                    <div class="flex items-center gap-4 mb-8 border-b-4 border-black pb-4">
+                        <div class="bg-neo-yellow brutal-border p-3 rounded-xl shadow-neo">
+                            <i class="fa-solid fa-list-check text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-heading text-2xl md:text-3xl font-black uppercase">Rundown Acara</h3>
+                            <p class="text-xs md:text-sm font-bold text-gray-600">Jadwal Acara Hari H (Dimulai Pukul 10.00 WIB)</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6 relative before:absolute before:inset-0 before:left-4 md:before:left-32 before:w-1 before:bg-black">
+                        <!-- Timeline Item 1 -->
+                        <div class="relative flex flex-col md:flex-row md:items-center gap-2 md:gap-8 pl-10 md:pl-0">
+                            <div class="md:w-32 md:text-right font-heading font-black text-lg bg-neo-yellow brutal-border px-3 py-1 rounded shadow-neo md:shadow-none inline-block w-max">
+                                10.00 - 11.00
+                            </div>
+                            <div class="absolute left-2 md:left-32 top-1.5 -translate-x-1/2 w-5 h-5 bg-neo-pink brutal-border rounded-full"></div>
+                            <div class="bg-neo-cream brutal-border p-4 rounded-xl shadow-neo flex-1">
+                                <h4 class="font-heading font-bold text-lg">Akad Nikah</h4>
+                                <p class="text-sm font-medium text-gray-700">Prosesi Ijab Kabul & Penyerahan Mas Kahin secara Khidmat.</p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 2 -->
+                        <div class="relative flex flex-col md:flex-row md:items-center gap-2 md:gap-8 pl-10 md:pl-0">
+                            <div class="md:w-32 md:text-right font-heading font-black text-lg bg-neo-mint brutal-border px-3 py-1 rounded shadow-neo md:shadow-none inline-block w-max">
+                                11.00 - 11.30
+                            </div>
+                            <div class="absolute left-2 md:left-32 top-1.5 -translate-x-1/2 w-5 h-5 bg-neo-yellow brutal-border rounded-full"></div>
+                            <div class="bg-neo-cream brutal-border p-4 rounded-xl shadow-neo flex-1">
+                                <h4 class="font-heading font-bold text-lg">Pengantin Masuk & Foto Keluarga</h4>
+                                <p class="text-sm font-medium text-gray-700">Penyambutan kedua mempelai serta sesi dokumentasi keluarga inti.</p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 3 -->
+                        <div class="relative flex flex-col md:flex-row md:items-center gap-2 md:gap-8 pl-10 md:pl-0">
+                            <div class="md:w-32 md:text-right font-heading font-black text-lg bg-neo-pink text-white brutal-border px-3 py-1 rounded shadow-neo md:shadow-none inline-block w-max">
+                                11.30 - 13.00
+                            </div>
+                            <div class="absolute left-2 md:left-32 top-1.5 -translate-x-1/2 w-5 h-5 bg-neo-purple brutal-border rounded-full"></div>
+                            <div class="bg-neo-cream brutal-border p-4 rounded-xl shadow-neo flex-1">
+                                <h4 class="font-heading font-bold text-lg">Sesi Resepsi & Makan Siang</h4>
+                                <p class="text-sm font-medium text-gray-700">Ramah tamah, santap hidangan utama, & ucapan selamat dari tamu.</p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 4 -->
+                        <div class="relative flex flex-col md:flex-row md:items-center gap-2 md:gap-8 pl-10 md:pl-0">
+                            <div class="md:w-32 md:text-right font-heading font-black text-lg bg-neo-purple text-white brutal-border px-3 py-1 rounded shadow-neo md:shadow-none inline-block w-max">
+                                13.00 - 14.30
+                            </div>
+                            <div class="absolute left-2 md:left-32 top-1.5 -translate-x-1/2 w-5 h-5 bg-neo-mint brutal-border rounded-full"></div>
+                            <div class="bg-neo-cream brutal-border p-4 rounded-xl shadow-neo flex-1">
+                                <h4 class="font-heading font-bold text-lg">Hiburan & Foto Tamu Undangan</h4>
+                                <p class="text-sm font-medium text-gray-700">Live Music Performance & Sesi foto bersama sahabat/tamu undangan.</p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 5 -->
+                        <div class="relative flex flex-col md:flex-row md:items-center gap-2 md:gap-8 pl-10 md:pl-0">
+                            <div class="md:w-32 md:text-right font-heading font-black text-lg bg-black text-white brutal-border px-3 py-1 rounded shadow-neo md:shadow-none inline-block w-max">
+                                14.30 - 15.00
+                            </div>
+                            <div class="absolute left-2 md:left-32 top-1.5 -translate-x-1/2 w-5 h-5 bg-black brutal-border rounded-full"></div>
+                            <div class="bg-neo-cream brutal-border p-4 rounded-xl shadow-neo flex-1">
+                                <h4 class="font-heading font-bold text-lg">Penutupan & Pelepasan Balon</h4>
+                                <p class="text-sm font-medium text-gray-700">Pengungkapan rasa terima kasih dan selebrasi pelepasan balon harapan.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GALERI FOTO PREWEDDING -->
+        <section class="py-20 px-4 md:px-12 bg-neo-purple border-b-4 border-black text-white">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="bg-neo-yellow text-black font-bold uppercase text-xs px-4 py-1.5 brutal-border rounded-full shadow-neo">Galeri Kenangan</span>
+                    <h2 class="font-heading text-4xl md:text-6xl font-black uppercase mt-3">Momen Bahagia</h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div class="bg-white brutal-border-lg p-3 rounded-2xl shadow-neo-lg transform rotate-1 hover:rotate-0 transition-all duration-300">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800" alt="Gallery 1" class="w-full h-64 object-cover rounded-xl brutal-border">
+                    </div>
+                    <div class="bg-white brutal-border-lg p-3 rounded-2xl shadow-neo-lg transform -rotate-2 hover:rotate-0 transition-all duration-300">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800" alt="Gallery 2" class="w-full h-64 object-cover rounded-xl brutal-border">
+                    </div>
+                    <div class="bg-white brutal-border-lg p-3 rounded-2xl shadow-neo-lg transform rotate-2 hover:rotate-0 transition-all duration-300">
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800" alt="Gallery 3" class="w-full h-64 object-cover rounded-xl brutal-border">
+                    </div>
+                    <div class="bg-white brutal-border-lg p-3 rounded-2xl shadow-neo-lg transform -rotate-1 hover:rotate-0 transition-all duration-300">
+                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=800" alt="Gallery 4" class="w-full h-64 object-cover rounded-xl brutal-border">
+                    </div>
+                    <div class="bg-white brutal-border-lg p-3 rounded-2xl shadow-neo-lg transform rotate-3 hover:rotate-0 transition-all duration-300">
+                        <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&q=80&w=800" alt="Gallery 5" class="w-full h-64 object-cover rounded-xl brutal-border">
+                    </div>
+                    <div class="bg-white brutal-border-lg p-3 rounded-2xl shadow-neo-lg transform -rotate-3 hover:rotate-0 transition-all duration-300">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=800" alt="Gallery 6" class="w-full h-64 object-cover rounded-xl brutal-border">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HADIAH & AMPLOP DIGITAL -->
+        <section class="py-20 px-4 md:px-12 bg-neo-yellow border-b-4 border-black">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="bg-neo-pink text-white font-bold uppercase text-xs px-4 py-1.5 brutal-border rounded-full shadow-neo">Digital Gift</span>
+                    <h2 class="font-heading text-4xl md:text-6xl font-black uppercase mt-3">Amplop Digital</h2>
+                    <p class="font-medium text-gray-800 max-w-lg mx-auto mt-2">
+                        Doa restu Anda merupakan hadiah terindah bagi kami. Namun jika ingin memberikan tanda kasih berupa hadiah digital, Anda dapat melalui rekening di bawah ini:
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <!-- Bank BCA -->
+                    <div class="bg-white brutal-border-lg p-6 rounded-2xl shadow-neo-lg relative">
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="font-heading font-black text-2xl text-blue-700">BCA</span>
+                            <i class="fa-solid fa-credit-card text-2xl"></i>
+                        </div>
+                        <p class="text-xs uppercase font-bold text-gray-500">Nomor Rekening</p>
+                        <p id="rekening-bca" class="font-heading text-2xl font-black mb-1">1234 5678 90</p>
+                        <p class="text-sm font-bold mb-6">a.n. Azzam Syahputra</p>
+                        <button onclick="copyToClipboard('1234567890')" class="w-full bg-neo-mint text-black font-bold brutal-border py-3 rounded-xl shadow-neo hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-copy"></i> Salin No. Rekening
+                        </button>
+                    </div>
+
+                    <!-- Bank Mandiri -->
+                    <div class="bg-white brutal-border-lg p-6 rounded-2xl shadow-neo-lg relative">
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="font-heading font-black text-2xl text-yellow-600">MANDIRI</span>
+                            <i class="fa-solid fa-credit-card text-2xl"></i>
+                        </div>
+                        <p class="text-xs uppercase font-bold text-gray-500">Nomor Rekening</p>
+                        <p id="rekening-mandiri" class="font-heading text-2xl font-black mb-1">9876 5432 10</p>
+                        <p class="text-sm font-bold mb-6">a.n. Rifdah Amalia</p>
+                        <button onclick="copyToClipboard('9876543210')" class="w-full bg-neo-pink text-white font-bold brutal-border py-3 rounded-xl shadow-neo hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-copy"></i> Salin No. Rekening
+                        </button>
+                    </div>
+                </div>
+
+                <!-- QRIS CARD -->
+                <div class="bg-white brutal-border-lg p-8 rounded-2xl shadow-neo-lg max-w-md mx-auto text-center">
+                    <h3 class="font-heading text-2xl font-black uppercase mb-4">QRIS Pembayaran</h3>
+                    <div class="bg-neo-cream border-4 border-black p-4 rounded-xl inline-block mb-4 shadow-neo">
+                        <!-- Placeholder QRIS Code -->
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=AzzamRifdahWedding" alt="QRIS Code" class="w-48 h-48 mx-auto">
+                    </div>
+                    <p class="text-xs font-bold text-gray-600 uppercase">Scan menggunakan aplikasi E-Wallet / Mobile Banking pilihan Anda</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RSVP & FORM UCAPAN / DOA -->
+        <section class="py-20 px-4 md:px-12 bg-neo-cream">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="bg-neo-mint text-black font-bold uppercase text-xs px-4 py-1.5 brutal-border rounded-full shadow-neo">Buku Tamu</span>
+                    <h2 class="font-heading text-4xl md:text-6xl font-black uppercase mt-3">RSVP & Ucapan Doa</h2>
+                </div>
+
+                <!-- Form Card -->
+                <div class="bg-white brutal-border-lg p-6 sm:p-10 rounded-2xl shadow-neo-lg mb-12">
+                    <form id="rsvp-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+                        <div>
+                            <label class="block font-heading font-extrabold text-sm uppercase mb-2">Nama Lengkap</label>
+                            <input type="text" id="guest-name" required placeholder="Contoh: Budi Santoso" class="w-full brutal-border p-4 rounded-xl font-medium focus:outline-none focus:ring-4 focus:ring-neo-yellow">
+                        </div>
+
+                        <div>
+                            <label class="block font-heading font-extrabold text-sm uppercase mb-2">Konfirmasi Kehadiran</label>
+                            <select id="attendance" required class="w-full brutal-border p-4 rounded-xl font-bold bg-white focus:outline-none focus:ring-4 focus:ring-neo-yellow">
+                                <option value="Hadir">Ya, Saya Akan Hadir</option>
+                                <option value="Tidak Hadir">Maaf, Tidak Bisa Hadir</option>
+                                <option value="Ragu-ragu">Masih Ragu-ragu</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block font-heading font-extrabold text-sm uppercase mb-2">Pesan & Doa Restu</label>
+                            <textarea id="wishes-message" rows="4" required placeholder="Tuliskan ucapan dan doa hangat Anda di sini..." class="w-full brutal-border p-4 rounded-xl font-medium focus:outline-none focus:ring-4 focus:ring-neo-yellow"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-neo-yellow text-black font-heading font-black text-lg brutal-border-lg py-4 rounded-xl shadow-neo hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all">
+                            KIRIM UCAPAN & RSVP <i class="fa-solid fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Wishes List -->
+                <div class="space-y-4">
+                    <h3 class="font-heading text-2xl font-black uppercase mb-6 flex items-center gap-2">
+                        <i class="fa-regular fa-comments"></i> Ucapan Teman & Keluarga
+                    </h3>
+
+                    <div id="wishes-container" class="space-y-4">
+                        <!-- Initial Comments -->
+                        <div class="bg-white brutal-border p-5 rounded-xl shadow-neo">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-heading font-extrabold">Dimas & Sarah</h4>
+                                <span class="bg-neo-mint text-xs font-bold px-2 py-0.5 brutal-border rounded">Hadir</span>
+                            </div>
+                            <p class="text-sm text-gray-800 font-medium">Happy Wedding Azzam & Rifdah! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Samawa terus ya kalian!</p>
+                            <span class="text-[10px] text-gray-500 font-bold block mt-3">Baru saja</span>
+                        </div>
+
+                        <div class="bg-white brutal-border p-5 rounded-xl shadow-neo">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-heading font-extrabold">Rizky Pratama</h4>
+                                <span class="bg-neo-yellow text-xs font-bold px-2 py-0.5 brutal-border rounded">Hadir</span>
+                            </div>
+                            <p class="text-sm text-gray-800 font-medium">Selamat bro Azzam! Akhirnya berlabuh juga. Semoga lancar sampai hari H nanti!</p>
+                            <span class="text-[10px] text-gray-500 font-bold block mt-3">1 jam yang lalu</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER SECTION -->
+        <footer class="bg-black text-white py-12 px-4 text-center border-t-4 border-black">
+            <div class="max-w-4xl mx-auto space-y-4">
+                <h2 class="font-heading text-3xl font-black tracking-tight text-neo-yellow">AZZAM & RIFDAH</h2>
+                <p class="text-sm font-medium text-gray-400">Terima kasih atas doa & restu Anda dalam momen berharga kami.</p>
+                <div class="pt-4 text-xs font-bold text-gray-500">
+                    Made with Neobrutalism Style &bull; 2027 Digital Invitation
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Audio Toggle Logic
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-btn');
+        const musicIcon = document.getElementById('music-icon');
+        let isPlaying = false;
+
+        function openInvitation() {
+            // Unlock scroll
+            document.body.classList.remove('cover-active');
+            
+            // Hide Cover Modal
+            const coverModal = document.getElementById('cover-modal');
+            coverModal.style.transform = 'translateY(-100%)';
+            
+            // Show Music Floating Button
+            musicBtn.classList.remove('hidden');
+
+            // Play Music
+            audio.play().then(() => {
+                isPlaying = true;
+            }).catch(error => {
+                console.log("Autoplay failed:", error);
+            });
+        }
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                musicIcon.classList.remove('fa-spin');
+                musicIcon.classList.replace('fa-compact-disc', 'fa-play');
+            } else {
+                audio.play();
+                musicIcon.classList.add('fa-spin');
+                musicIcon.classList.replace('fa-play', 'fa-compact-disc');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Countdown Timer Logic Target: 1 January 2027 10:00:00
+        const targetDate = new Date('January 1, 2027 10:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+                document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+                document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+            } else {
+                document.getElementById('countdown').innerHTML = "<div class='col-span-4 font-heading font-black text-2xl bg-neo-yellow p-4 brutal-border rounded-xl'>ACARA SEDANG BERLANGSUNG!</div>";
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Clipboard Copying Function
+        function copyToClipboard(text) {
+            // Using execCommand for iframe compatibility fallback
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+
+            // Show Toast
+            const toast = document.getElementById('toast');
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // RSVP Form Submission Handler
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('guest-name').value;
+            const status = document.getElementById('attendance').value;
+            const message = document.getElementById('wishes-message').value;
+
+            const wishesContainer = document.getElementById('wishes-container');
+
+            // Badge Color Logic
+            let badgeBg = 'bg-neo-mint';
+            if(status === 'Tidak Hadir') badgeBg = 'bg-neo-pink text-white';
+            if(status === 'Ragu-ragu') badgeBg = 'bg-neo-yellow';
+
+            // Create New Wish Item
+            const newWish = document.createElement('div');
+            newWish.className = 'bg-white brutal-border p-5 rounded-xl shadow-neo animate-fade-in';
+            newWish.innerHTML = `
+                <div class="flex justify-between items-center mb-2">
+                    <h4 class="font-heading font-extrabold">${escapeHtml(name)}</h4>
+                    <span class="${badgeBg} text-xs font-bold px-2 py-0.5 brutal-border rounded">${escapeHtml(status)}</span>
+                </div>
+                <p class="text-sm text-gray-800 font-medium">${escapeHtml(message)}</p>
+                <span class="text-[10px] text-gray-500 font-bold block mt-3">Baru saja</span>
+            `;
+
+            // Insert at the top of comments
+            wishesContainer.insertBefore(newWish, wishesContainer.firstChild);
+
+            // Reset form
+            document.getElementById('rsvp-form').reset();
+            alert('Terima kasih! Ucapan & konfirmasi Anda telah tersimpan.');
+        }
+
+        // Simple Helper to prevent HTML Injection
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+    </script>
+</body>
+</html>
